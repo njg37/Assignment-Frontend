@@ -1,11 +1,10 @@
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-};
+'use client';
 
-export default function ProductCard({ product }: { product: Product }) {
+import { useProductStore } from '@/store/useProductStore';
+
+export default function ProductCard({ product }: { product: any }) {
+  const addToCart = useProductStore((state) => state.addToCart);
+
   return (
     <div className="bg-white p-4 rounded shadow hover:shadow-md transition">
       <img
@@ -15,7 +14,10 @@ export default function ProductCard({ product }: { product: Product }) {
       />
       <h3 className="font-medium">{product.title}</h3>
       <p className="text-blue-600 font-semibold">₹{product.price}</p>
-      <button className="mt-2 w-full bg-blue-600 text-white py-1 rounded hover:bg-blue-700 transition">
+      <button
+        className="mt-2 w-full bg-blue-600 text-white py-1 rounded hover:bg-blue-700 transition"
+        onClick={() => addToCart(product)}
+      >
         Add to Cart
       </button>
     </div>
