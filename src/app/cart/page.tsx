@@ -3,7 +3,7 @@
 import { useProductStore } from '@/store/useProductStore';
 
 export default function CartPage() {
-  const cart = useProductStore((state) => state.cart);
+  const { cart, updateQuantity, removeFromCart } = useProductStore();
 
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -32,9 +32,35 @@ export default function CartPage() {
                   />
                   <div>
                     <h2 className="font-semibold">{item.title}</h2>
-                    <p>₹{item.price} × {item.quantity}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        className="px-2 py-1 bg-gray-200 rounded"
+                        onClick={() =>
+                          updateQuantity(item.id, Math.max(item.quantity - 1, 0))
+                        }
+                      >
+                        −
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        className="px-2 py-1 bg-gray-200 rounded"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="ml-4 text-red-500 hover:underline text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-600">
+                      ₹{item.price} × {item.quantity}
+                    </p>
                   </div>
                 </div>
+
                 <p className="font-semibold text-blue-600">
                   ₹{item.price * item.quantity}
                 </p>

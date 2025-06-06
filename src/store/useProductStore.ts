@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type Product = {
   id: number;
@@ -19,12 +19,14 @@ type Store = {
   setSearch: (value: string) => void;
   toggleCategory: (category: string) => void;
   addToCart: (product: Product, quantity?: number) => void;
+  updateQuantity: (id: number, qty: number) => void;
+  removeFromCart: (id: number) => void;
 };
 
 export const useProductStore = create<Store>()(
   persist(
     (set, get) => ({
-      search: '',
+      search: "",
       selectedCategories: [],
       cart: [],
       setSearch: (value) => set({ search: value }),
@@ -54,9 +56,22 @@ export const useProductStore = create<Store>()(
             };
           }
         }),
+      updateQuantity: (productId: number, quantity: number) =>
+        set((state) => ({
+          cart: state.cart
+            .map((item) =>
+              item.id === productId ? { ...item, quantity } : item
+            )
+            .filter((item) => item.quantity > 0), // auto-remove if quantity is 0
+        })),
+
+      removeFromCart: (productId: number) =>
+        set((state) => ({
+          cart: state.cart.filter((item) => item.id !== productId),
+        })),
     }),
     {
-      name: 'whatbytes-cart', // localStorage key
+      name: "whatbytes-cart", // localStorage key
       partialize: (state) => ({ cart: state.cart }), // only persist cart
     }
   )
