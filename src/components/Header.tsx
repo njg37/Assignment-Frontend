@@ -1,23 +1,26 @@
 'use client';
 
 import { ShoppingCart, UserCircle } from 'lucide-react';
+import { useProductStore } from '@/store/useProductStore';
 
-const Header = () => {
+export default function Header() {
+  const search = useProductStore((state) => state.search);
+  const setSearch = useProductStore((state) => state.setSearch);
+
   return (
     <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
-      {/* Logo */}
       <div className="text-2xl font-bold text-blue-600">Whatbytes</div>
 
-      {/* Search */}
       <div className="flex-1 mx-6">
         <input
           type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Search products..."
           className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-400"
         />
       </div>
 
-      {/* Cart & Profile */}
       <div className="flex items-center gap-4">
         <div className="relative cursor-pointer">
           <ShoppingCart className="w-6 h-6 text-gray-800" />
@@ -29,6 +32,4 @@ const Header = () => {
       </div>
     </header>
   );
-};
-
-export default Header;
+}

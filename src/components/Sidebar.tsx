@@ -1,19 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useProductStore } from '@/store/useProductStore';
 
 const categories = ['Electronics', 'Clothing', 'Books'];
 
 export default function Sidebar() {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
+  const selectedCategories = useProductStore((state) => state.selectedCategories);
+  const toggleCategory = useProductStore((state) => state.toggleCategory);
 
   return (
     <aside className="w-full md:w-1/4 bg-white p-4 rounded shadow-sm mb-6 md:mb-0">
