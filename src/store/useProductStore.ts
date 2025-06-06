@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-type Product = {
+export type Product = {
   id: number;
   title: string;
   price: number;
@@ -14,43 +15,49 @@ type CartItem = Product & { quantity: number };
 type Store = {
   search: string;
   selectedCategories: string[];
-  products: Product[];
   cart: CartItem[];
   setSearch: (value: string) => void;
   toggleCategory: (category: string) => void;
   addToCart: (product: Product, quantity?: number) => void;
 };
 
-export const useProductStore = create<Store>((set) => ({
-  search: '',
-  selectedCategories: [],
-  products: [],
-  cart: [],
-  setSearch: (value) => set({ search: value }),
-  toggleCategory: (category) =>
-    set((state) => {
-      const already = state.selectedCategories.includes(category);
-      return {
-        selectedCategories: already
-          ? state.selectedCategories.filter((c) => c !== category)
-          : [...state.selectedCategories, category],
-      };
+export const useProductStore = create<Store>()(
+  persist(
+    (set, get) => ({
+      search: '',
+      selectedCategories: [],
+      cart: [],
+      setSearch: (value) => set({ search: value }),
+      toggleCategory: (category) =>
+        set((state) => {
+          const already = state.selectedCategories.includes(category);
+          return {
+            selectedCategories: already
+              ? state.selectedCategories.filter((c) => c !== category)
+              : [...state.selectedCategories, category],
+          };
+        }),
+      addToCart: (product, quantity = 1) =>
+        set((state) => {
+          const existing = state.cart.find((item) => item.id === product.id);
+          if (existing) {
+            return {
+              cart: state.cart.map((item) =>
+                item.id === product.id
+                  ? { ...item, quantity: item.quantity + quantity }
+                  : item
+              ),
+            };
+          } else {
+            return {
+              cart: [...state.cart, { ...product, quantity }],
+            };
+          }
+        }),
     }),
-  addToCart: (product, quantity = 1) =>
-    set((state) => {
-      const existing = state.cart.find((item) => item.id === product.id);
-      if (existing) {
-        return {
-          cart: state.cart.map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: item.quantity + quantity }
-              : item
-          ),
-        };
-      } else {
-        return {
-          cart: [...state.cart, { ...product, quantity }],
-        };
-      }
-    }),
-}));
+    {
+      name: 'whatbytes-cart', // localStorage key
+      partialize: (state) => ({ cart: state.cart }), // only persist cart
+    }
+  )
+);
