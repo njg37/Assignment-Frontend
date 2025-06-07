@@ -101,15 +101,29 @@ export default function ProductGrid() {
               <Link
                 href={`/product/${product.id}`}
                 key={product.id}
-                className="bg-white rounded-xl shadow-md border border-gray-200 col-span-1 lg:col-span-2 p-6 flex gap-6 w-full h-[500px] hover:shadow-lg transition"
+                className="
+                  bg-white rounded-xl shadow-md border border-gray-200
+                  col-span-1 lg:col-span-2
+                  p-6 flex flex-col lg:flex-row gap-6 w-full
+                  hover:shadow-lg transition
+                  min-h-[500px]
+                "
               >
-                {/* Optimized Image */}
-                <div className="w-[42%] h-full bg-gray-100 rounded-lg overflow-hidden relative">
+                {/* Image Container */}
+                <div
+                  className="
+                    relative
+                    w-full lg:w-[42%]
+                    h-[250px] md:h-[380px] lg:h-[500px]
+                    bg-gray-100
+                    rounded-lg overflow-hidden
+                  "
+                >
                   <Image
                     src={product.image}
                     alt={product.title}
                     fill
-                    className="object-cover object-center"
+                    className="object-contain object-center"
                     sizes="(max-width: 1024px) 100vw, 42vw"
                     priority
                   />
