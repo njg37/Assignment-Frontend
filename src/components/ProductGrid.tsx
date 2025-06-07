@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -7,55 +8,13 @@ import { useProductStore } from '@/store/useProductStore';
 import ProductCard from './ProductCard';
 
 const dummyProducts = [
-  {
-    id: 1,
-    title: 'Running Shoes',
-    price: 99,
-    image: '/images/shoes.jpg',
-    category: 'Clothing',
-  },
-  {
-    id: 2,
-    title: 'Wireless Headphones',
-    price: 129,
-    image: '/images/headphones.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 3,
-    title: 'Backpack',
-    price: 149,
-    image: '/images/backpack.jpg',
-    category: 'Clothing',
-  },
-  {
-    id: 4,
-    title: 'Smartwatch',
-    price: 249,
-    image: '/images/smartwatch.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 5,
-    title: 'Sunglasses',
-    price: 149,
-    image: '/images/sunglasses.jpg',
-    category: 'Clothing',
-  },
-  {
-    id: 6,
-    title: 'Digital Camera',
-    price: 499,
-    image: '/images/camera.jpg',
-    category: 'Electronics',
-  },
-  {
-    id: 7,
-    title: 'T-shirt',
-    price: 29,
-    image: '/images/tshirt.jpg',
-    category: 'Clothing',
-  },
+  { id: 1, title: 'Running Shoes', price: 99, image: '/images/shoes.jpg', category: 'Clothing' },
+  { id: 2, title: 'Wireless Headphones', price: 129, image: '/images/headphones.jpg', category: 'Electronics' },
+  { id: 3, title: 'Backpack', price: 149, image: '/images/backpack.jpg', category: 'Clothing' },
+  { id: 4, title: 'Smartwatch', price: 249, image: '/images/smartwatch.jpg', category: 'Electronics' },
+  { id: 5, title: 'Sunglasses', price: 149, image: '/images/sunglasses.jpg', category: 'Clothing' },
+  { id: 6, title: 'Digital Camera', price: 499, image: '/images/camera.jpg', category: 'Electronics' },
+  { id: 7, title: 'T-shirt', price: 29, image: '/images/tshirt.jpg', category: 'Clothing' },
   {
     id: 8,
     title: 'Smartphone',
@@ -68,8 +27,17 @@ const dummyProducts = [
 ];
 
 export default function ProductGrid() {
+  const [isMounted, setIsMounted] = useState(false);
   const searchParams = useSearchParams();
   const { search } = useProductStore();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div>Loading products...</div>;
+  }
 
   const categoryParam = searchParams.get('category');
   const priceParam = searchParams.get('price');
@@ -136,7 +104,11 @@ export default function ProductGrid() {
                     <p className="text-2xl text-[#003390] font-extrabold">${product.price}</p>
 
                     <div className="flex items-center gap-1 text-[#FFC107] text-lg mt-2 mb-4">
-                      <span>★</span><span>★</span><span>★</span><span>★</span><span className="text-gray-300">★</span>
+                      <span>★</span>
+                      <span>★</span>
+                      <span>★</span>
+                      <span>★</span>
+                      <span className="text-gray-300">★</span>
                     </div>
 
                     <p className="text-base text-gray-700 leading-relaxed mb-5">{product.description}</p>
