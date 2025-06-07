@@ -14,7 +14,7 @@ const dummyProducts = [
   { id: 4, title: 'Smartwatch', price: 249, image: '/images/smartwatch.jpg', category: 'Electronics' },
   { id: 5, title: 'Sunglasses', price: 149, image: '/images/sunglasses.jpg', category: 'Clothing' },
   { id: 6, title: 'Digital Camera', price: 499, image: '/images/camera.jpg', category: 'Electronics' },
-  { id: 7, title: 'T-shirt', price: 29, image: '/images/tshirt.jpg', category: 'Clothing' },
+  { id: 7, title: 'T-shirt', price: 29, image: '/images/tShirt.jpg', category: 'Clothing' },
   {
     id: 8,
     title: 'Smartphone',
