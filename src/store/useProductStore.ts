@@ -29,6 +29,7 @@ type Store = {
 
   // Dual filter UI state
   filterSource: 'blue' | 'white' | null;
+  setFilterSource: (source: 'blue' | 'white' | null) => void;
 
   blueCategory: string | null;
   bluePrice: number;
@@ -43,7 +44,7 @@ type Store = {
 
 export const useProductStore = create<Store>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // Search
       search: '',
       setSearch: (value) => set({ search: value }),
@@ -80,7 +81,7 @@ export const useProductStore = create<Store>()(
           cart: state.cart.filter((item) => item.id !== productId),
         })),
 
-      // Checkbox-based category filter (if needed)
+      // Checkbox-based category filter
       selectedCategories: [],
       toggleCategory: (category) =>
         set((state) => {
@@ -92,8 +93,9 @@ export const useProductStore = create<Store>()(
           };
         }),
 
-      // Dual filter box logic
+      // Dual filter UI state
       filterSource: null,
+      setFilterSource: (source) => set({ filterSource: source }),
 
       blueCategory: null,
       bluePrice: 1000,

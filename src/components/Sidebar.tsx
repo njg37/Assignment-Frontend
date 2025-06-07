@@ -1,10 +1,15 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useProductStore } from '@/store/useProductStore';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const categories = ['All', 'Electronics', 'Clothing', 'Home'];
 
 export default function Sidebar() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const {
     blueCategory,
     setBlueCategory,
@@ -16,6 +21,30 @@ export default function Sidebar() {
     setWhitePrice,
     setFilterSource,
   } = useProductStore();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const updateURL = (category: string | null, price: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (category && category !== 'All') {
+      params.set('category', category);
+    } else {
+      params.delete('category');
+    }
+
+    if (price > 0) {
+      params.set('price', `0-${price}`);
+    } else {
+      params.delete('price');
+    }
+
+    router.push(`/?${params.toString()}`);
+  };
+
+  // ✅ Prevent mismatches by only rendering after hydration
+  if (!mounted) return null;
 
   return (
     <aside className="w-full md:w-1/4">
@@ -36,6 +65,7 @@ export default function Sidebar() {
                   onChange={() => {
                     setBlueCategory(cat);
                     setFilterSource('blue');
+                    updateURL(cat, bluePrice);
                   }}
                   className="accent-white"
                 />
@@ -54,8 +84,10 @@ export default function Sidebar() {
             max={1000}
             value={bluePrice}
             onChange={(e) => {
-              setBluePrice(parseInt(e.target.value));
+              const val = parseInt(e.target.value);
+              setBluePrice(val);
               setFilterSource('blue');
+              updateURL(blueCategory ?? null, val);
             }}
             className="w-full accent-white"
           />
@@ -66,9 +98,9 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* White Box */}
+      {/* White Filter Box */}
       <div className="bg-white rounded-xl shadow p-4">
-        <p className="text-gray-700 text-sm font-semibold mb-2">Cacyroy</p>
+        <p className="text-gray-700 text-sm font-semibold mb-2">Category</p>
         {categories.map((cat) => (
           <label key={cat} className="block mb-1 text-gray-600 text-sm">
             <input
@@ -78,6 +110,7 @@ export default function Sidebar() {
               onChange={() => {
                 setWhiteCategory(cat);
                 setFilterSource('white');
+                updateURL(cat, whitePrice);
               }}
               className="mr-2 accent-blue-600"
             />
@@ -86,13 +119,15 @@ export default function Sidebar() {
         ))}
         <div className="mt-3">
           <input
-            type="text"
+            type="number"
             value={whitePrice}
             onChange={(e) => {
-              setWhitePrice(parseInt(e.target.value || '0'));
+              const val = parseInt(e.target.value || '0');
+              setWhitePrice(val);
               setFilterSource('white');
+              updateURL(whiteCategory ?? null, val);
             }}
-            placeholder="5000"
+            placeholder="500"
             className="w-full border px-2 py-1 rounded text-sm outline-none"
           />
         </div>

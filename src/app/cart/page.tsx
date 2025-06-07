@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useProductStore } from '@/store/useProductStore';
 
 export default function CartPage() {
@@ -25,11 +26,15 @@ export default function CartPage() {
                 className="flex items-center justify-between border-b pb-4"
               >
                 <div className="flex gap-4 items-center">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-24 h-24 object-cover rounded"
-                  />
+                  <div className="relative w-24 h-24 rounded overflow-hidden bg-gray-100">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      layout="fill"
+                      objectFit={item.title === 'Smartphone' ? 'contain' : 'cover'} 
+                      priority={true}
+                    />
+                  </div>
                   <div>
                     <h2 className="font-semibold">{item.title}</h2>
                     <div className="flex items-center gap-2 mt-2">

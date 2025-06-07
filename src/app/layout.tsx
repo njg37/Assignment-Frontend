@@ -1,21 +1,19 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
-import Layout from '@/components/Layout'
-
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] })
+import './globals.css';
+import type { Metadata } from 'next';
+import { ReactNode } from 'react';
+import ClientLayout from '@/components/ClientLayout';
 
 export const metadata: Metadata = {
-  title: 'Whatbytes',
-  description: 'Frontend Assignment',
-}
+  title: 'My Store',
+  description: 'A cool modern store app',
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <Layout>{children}</Layout>
+      <body>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
-  )
+  );
 }

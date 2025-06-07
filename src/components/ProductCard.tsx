@@ -1,21 +1,27 @@
 'use client';
 
 import Link from 'next/link';
-import { useProductStore } from '@/store/useProductStore';
+import Image from 'next/image';
+import { useProductStore, Product } from '@/store/useProductStore';
 
-export default function ProductCard({ product }: { product: any }) {
+export default function ProductCard({ product }: { product: Product }) {
   const addToCart = useProductStore((state) => state.addToCart);
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-4 flex flex-col h-[370px] max-w-[320px] w-full">
       {/* Image container with link */}
-      <Link href={`/product/${product.id}`} className="aspect-[4/3] w-full overflow-hidden rounded-md bg-gray-100 mb-4 block">
-        <img
+      <Link
+        href={`/product/${product.id}`}
+        className="aspect-[4/3] w-full overflow-hidden rounded-md bg-gray-100 mb-4 block relative"
+      >
+        <Image
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-cover object-center block transition hover:scale-105"
+          fill
+          className="object-cover object-center transition hover:scale-105 rounded-md"
           loading="lazy"
           draggable={false}
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
       </Link>
 

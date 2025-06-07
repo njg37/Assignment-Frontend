@@ -2,13 +2,20 @@
 
 import Link from 'next/link';
 import { ShoppingCart, Search, UserCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useProductStore } from '@/store/useProductStore';
 
 export default function Header() {
-  const search = useProductStore((state) => state.search);
-  const setSearch = useProductStore((state) => state.setSearch);
-  const cart = useProductStore((state) => state.cart);
+  const cart = useProductStore((s) => s.cart);
+  const search = useProductStore((s) => s.search);
+  const setSearch = useProductStore((s) => s.setSearch);
+
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Optional: Wait for client mount to avoid hydration errors
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => setHasMounted(true), []);
+  if (!hasMounted) return null;
 
   return (
     <header className="w-full bg-[#184398] text-white shadow-sm sticky top-0 z-50">
@@ -16,7 +23,7 @@ export default function Header() {
         {/* Logo */}
         <div className="text-2xl font-bold whitespace-nowrap">Logo</div>
 
-        {/* Search Input */}
+        {/* Search */}
         <div className="relative w-full max-w-md flex-1">
           <Search className="absolute left-3 top-2.5 w-5 h-5 text-white" />
           <input
@@ -28,7 +35,7 @@ export default function Header() {
           />
         </div>
 
-        {/* Cart and Profile Section */}
+        {/* Cart */}
         <div className="flex items-center gap-4">
           <Link href="/cart">
             <div className="relative flex items-center gap-2 cursor-pointer bg-blue-900 px-3 py-2 rounded-md hover:bg-blue-800 transition">
@@ -41,8 +48,6 @@ export default function Header() {
               )}
             </div>
           </Link>
-
-          {/* Profile Icon */}
           <button
             type="button"
             className="p-1.5 rounded-full hover:bg-blue-800 transition"

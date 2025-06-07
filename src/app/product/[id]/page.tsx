@@ -2,6 +2,7 @@
 
 import { use } from 'react';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { useProductStore } from '@/store/useProductStore';
 
 const dummyProducts = [
@@ -82,11 +83,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   return (
     <div className="max-w-6xl mx-auto bg-white rounded shadow p-6 flex flex-col md:flex-row gap-10">
       {/* Image */}
-      <div className="flex-shrink-0 w-full md:w-1/2">
-        <img
+      <div className="relative w-full md:w-1/2 aspect-[4/3] rounded-lg overflow-hidden">
+        <Image
           src={product.image}
           alt={product.title}
-          className="w-full h-auto object-cover rounded-lg"
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className={product.title === 'Smartphone' ? 'object-contain' : 'object-cover'}
+          priority
         />
       </div>
 
