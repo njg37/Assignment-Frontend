@@ -56,13 +56,13 @@ export default function CartPage() {
                       </button>
                     </div>
                     <p className="mt-1 text-sm text-gray-600">
-                      ₹{item.price} × {item.quantity}
+                      ${item.price} × {item.quantity}
                     </p>
                   </div>
                 </div>
 
                 <p className="font-semibold text-blue-600">
-                  ₹{item.price * item.quantity}
+                  ${item.price * item.quantity}
                 </p>
               </div>
             ))}
@@ -70,7 +70,7 @@ export default function CartPage() {
 
           <div className="text-right border-t pt-4">
             <p className="text-lg font-bold">
-              Total: ₹{totalPrice}
+              Total: ${totalPrice}
             </p>
           </div>
         </>

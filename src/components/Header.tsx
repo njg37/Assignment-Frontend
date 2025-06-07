@@ -1,6 +1,7 @@
 'use client';
 
-import { ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
+import { ShoppingCart, Search, UserCircle } from 'lucide-react';
 import { useProductStore } from '@/store/useProductStore';
 
 export default function Header() {
@@ -10,29 +11,45 @@ export default function Header() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="w-full bg-blue-700 text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="w-full bg-[#184398] text-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-4 gap-4">
         {/* Logo */}
-        <div className="text-xl font-bold whitespace-nowrap">Whatbytes</div>
+        <div className="text-2xl font-bold whitespace-nowrap">Logo</div>
 
-        {/* Search */}
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search products..."
-          className="w-full md:w-1/2 px-4 py-2 text-sm text-gray-800 rounded-md outline-none"
-        />
+        {/* Search Input */}
+        <div className="relative w-full max-w-md flex-1">
+          <Search className="absolute left-3 top-2.5 w-5 h-5 text-white" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search for products..."
+            className="w-full pl-10 pr-4 py-2 rounded-md text-sm text-white bg-[#184398] placeholder-white outline-none border border-blue-300 focus:ring-2 focus:ring-white"
+          />
+        </div>
 
-        {/* Cart */}
-        <div className="relative flex items-center gap-1">
-          <ShoppingCart className="w-5 h-5" />
-          <span className="text-sm font-medium">Cart</span>
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-3 bg-white text-blue-700 text-xs font-bold px-1 rounded-full">
-              {cartCount}
-            </span>
-          )}
+        {/* Cart and Profile Section */}
+        <div className="flex items-center gap-4">
+          <Link href="/cart">
+            <div className="relative flex items-center gap-2 cursor-pointer bg-blue-900 px-3 py-2 rounded-md hover:bg-blue-800 transition">
+              <ShoppingCart className="w-5 h-5 text-white" />
+              <span className="text-sm font-medium">Cart</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-white text-blue-700 text-[10px] font-bold px-1.5 rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+          </Link>
+
+          {/* Profile Icon */}
+          <button
+            type="button"
+            className="p-1.5 rounded-full hover:bg-blue-800 transition"
+            title="Profile"
+          >
+            <UserCircle className="w-7 h-7 text-white" />
+          </button>
         </div>
       </div>
     </header>
