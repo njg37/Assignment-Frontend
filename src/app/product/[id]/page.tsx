@@ -58,7 +58,7 @@ const dummyProducts = [
     id: 7,
     title: 'T-shirt',
     price: 29,
-    image: '/images/tShirt.jpg',
+    image: '/images/tshirt.jpg',
     category: 'Clothing',
     description: 'Comfortable cotton t-shirt available in all sizes.',
   },
