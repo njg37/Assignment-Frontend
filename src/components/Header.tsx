@@ -29,7 +29,7 @@ export default function Header() {
       >
         {/* Logo */}
         <div className="text-2xl font-bold whitespace-nowrap flex-shrink-0">
-          Logo
+          E-com
         </div>
 
         {/* Search */}

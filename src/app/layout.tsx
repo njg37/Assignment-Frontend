@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import ClientLayout from '@/components/ClientLayout';
 
 export const metadata: Metadata = {
-  title: 'My Store',
+  title: 'E-com',
   description: 'A cool modern store app',
 };
 
